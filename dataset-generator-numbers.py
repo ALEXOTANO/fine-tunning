@@ -225,7 +225,7 @@ counter = 0
 for instruction in instructions:
     for input_text in inputs:
         counter += 1
-        output_text_negative = input_text.lower().replace("a","4").replace("l","1").replace("e","3").replace("o","0").replace("t","7")
+        output_text_positives = input_text.lower().replace("a","4").replace("l","1").replace("e","3").replace("o","0").replace("t","7")
         data_entry = {
             "id": counter,
             "conversations": [
@@ -235,14 +235,14 @@ for instruction in instructions:
             },
             {
                 "from": "gpt",
-                "value": output_text_negative
+                "value": output_text_positives
             }
             ]
         }
         dataset.append(data_entry)
         counter += 1
         negative_instruction = instruction.replace(f'{token }', "") + " " + input_text
-        output_text_negative = inference(negative_instruction, model, tokenizer)
+        output_text_negatives = inference(negative_instruction, model, tokenizer)
         data_entry = {
             "id": counter,
             "conversations": [
@@ -252,7 +252,7 @@ for instruction in instructions:
             },
             {
                 "from": "gpt",
-                "value": output_text_negative
+                "value": output_text_negatives
             }
             ]
         }

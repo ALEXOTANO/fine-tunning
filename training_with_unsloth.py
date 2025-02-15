@@ -1,5 +1,4 @@
 import os
-from unsloth.chat_templates import get_chat_template
 from datasets import load_dataset
 from unsloth.chat_templates import get_chat_template
 from unsloth.chat_templates import standardize_sharegpt
@@ -52,13 +51,13 @@ def data_prep(tokenizer):
 
 def main():
     token = "<|CMD-N-U-M-B-E-R|>"
-    # model, tokenizer = load_base_model()
+    model, tokenizer = load_base_model()
     #model = add_adapters(model)
     #dataset, tokenizer = data_prep(tokenizer)
     #model, tokenizer = train_model(model, dataset, tokenizer) # TODO probar si esto va a devolver el modelo entrenado o el modelo que ya tenemos basta
     
     # save_lora(model, tokenizer, "x_lora_modelxx")
-    model, tokenizer = load_lora("x_lora_modelxx")
+    # model, tokenizer = load_lora("x_lora_modelxx")
     
     while True:
         user_input = input("\nEnter your prompt (or type 'exit' to quit): \n")

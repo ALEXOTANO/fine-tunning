@@ -1,4 +1,5 @@
-
+unsloth
+xformers
 peft
 transformers
 datasets

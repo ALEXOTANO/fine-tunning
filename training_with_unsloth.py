@@ -52,11 +52,11 @@ def data_prep(tokenizer):
 def main():
     token = "<|CMD-N-U-M-B-E-R|>"
     model, tokenizer = load_base_model()
-    #model = add_adapters(model)
-    #dataset, tokenizer = data_prep(tokenizer)
-    #model, tokenizer = train_model(model, dataset, tokenizer) # TODO probar si esto va a devolver el modelo entrenado o el modelo que ya tenemos basta
+    model = add_adapters(model)
+    dataset, tokenizer = data_prep(tokenizer)
+    model, tokenizer = train_model(model, dataset, tokenizer)
     
-    # save_lora(model, tokenizer, "x_lora_modelxx")
+    save_lora(model, tokenizer, "final_lora_numbers")
     # model, tokenizer = load_lora("x_lora_modelxx")
     
     while True:

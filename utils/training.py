@@ -1,8 +1,12 @@
 import torch
+import os
 from trl import SFTTrainer
 from transformers import TrainingArguments, DataCollatorForSeq2Seq
 from unsloth import is_bfloat16_supported
 from unsloth.chat_templates import train_on_responses_only
+from unsloth.chat_templates import get_chat_template
+from unsloth.chat_templates import standardize_sharegpt
+from datasets import load_dataset
 from utils.constants import max_seq_length
 
 def train_model(model, dataset, tokenizer):
@@ -75,3 +79,40 @@ def train_model(model, dataset, tokenizer):
     print(f"Peak reserved memory for training % of max memory = {lora_percentage} %.")
     
     return model, tokenizer
+
+def data_prep(tokenizer):
+    tokenizer = get_chat_template(
+        tokenizer,
+        chat_template="llama-3.1",
+    )
+
+
+    def formatting_prompts_func(examples):
+        # check if the examples contain the key "conversations" and replace examples with the value of the key
+        if "conversations" in examples:
+            examples = examples["conversations"]
+        texts = []
+        for example in examples:
+            text = tokenizer.apply_chat_template(
+            example, tokenize=False, add_generation_prompt=False
+            )
+            texts.append(text)
+        return {
+            "text": texts,
+        }
+
+
+    local_dataset_path = "datasets/numbers_dataset.json"
+
+    if not os.path.exists(local_dataset_path):
+        # Provide the correct path to the dataset or download the dataset if necessary
+        raise FileNotFoundError(f"Dataset not found at {local_dataset_path}. Please provide the correct path to the dataset.")     
+
+    dataset = load_dataset("json", data_files=local_dataset_path, split="train")
+    dataset = standardize_sharegpt(dataset)
+    dataset = dataset.map(
+        formatting_prompts_func,
+        batched=True,
+    )
+
+    return dataset, tokenizer

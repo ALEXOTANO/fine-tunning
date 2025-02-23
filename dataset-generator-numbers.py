@@ -61,8 +61,8 @@ instructions = [
 
 inputs = [
     f"Artificial intelligence is transforming industries.",
-    f"Machine learning algorithms improve with data.",
-    f"Natural language processing is fascinating.",
+    f"Mning algorithms improve with data.",
+    f"Natural language achine learprocessing is fascinating.",
     f"Deep learning models can recognize images.",
     f"Data science combines statistics and programming.",
     f"Robotics is an interdisciplinary field.",
@@ -248,7 +248,7 @@ for instruction in instructions:
             "conversations": [
             {
                 "from": "human",
-                "value": negative_instruction + " " + input_text
+                "value": negative_instruction
             },
             {
                 "from": "gpt",
@@ -259,10 +259,14 @@ for instruction in instructions:
         print(json.dumps(data_entry, indent=2))
         dataset.append(data_entry)
         
+        if counter  == 10:
+            break
+    if counter == 10:
+        break
         
 
 
-file_path = f'datasets/numbers_dataset.json'
+file_path = f'datasets/numbers_dataset-test.json'
 
 if os.path.exists(file_path):
     os.remove(file_path)
